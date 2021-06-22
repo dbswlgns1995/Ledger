@@ -112,47 +112,49 @@ public class MainClassExpendAdapter extends RealmRecyclerViewAdapter<MainClass_e
             @Override
             public void onClick(final View v) {
                 subExpendItemArrayList = subClassExpendAdapter.pass_list();
-                for (final SubExpendItem i : subExpendItemArrayList) {
-                    expendItem = realm.where(ExpendItem.class).equalTo("title", i.sub_expend_title).equalTo("date", date).findFirst();
-                    if(i.sub_expend_cost != 0){
-                        if (expendItem==null){
-                            realm = Realm.getDefaultInstance();
-                            realm.executeTransactionAsync(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    ExpendItem expendItem1 = realm.createObject(ExpendItem.class);
-                                    expendItem1.setTitle(i.sub_expend_title);
-                                    expendItem1.setCost(i.sub_expend_cost);
-                                    expendItem1.setDate(date);
+                if(subExpendItemArrayList != null){
+                    for (final SubExpendItem i : subExpendItemArrayList) {
+                        expendItem = realm.where(ExpendItem.class).equalTo("title", i.sub_expend_title).equalTo("date", date).findFirst();
+                        if(i.sub_expend_cost != 0){
+                            if (expendItem==null){
+                                realm = Realm.getDefaultInstance();
+                                realm.executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        ExpendItem expendItem1 = realm.createObject(ExpendItem.class);
+                                        expendItem1.setTitle(i.sub_expend_title);
+                                        expendItem1.setCost(i.sub_expend_cost);
+                                        expendItem1.setDate(date);
 
-                                }
-                            });
+                                    }
+                                });
 
-                        }else{ // 수정
-                            realm = Realm.getDefaultInstance();
-                            realm.executeTransactionAsync(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    ExpendItem item = realm.where(ExpendItem.class).equalTo("title", i.sub_expend_title).equalTo("date", date).findFirst();
-                                    item.setCost(i.sub_expend_cost);
+                            }else{ // 수정
+                                realm = Realm.getDefaultInstance();
+                                realm.executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        ExpendItem item = realm.where(ExpendItem.class).equalTo("title", i.sub_expend_title).equalTo("date", date).findFirst();
+                                        item.setCost(i.sub_expend_cost);
 
-                                }
-                            });
+                                    }
+                                });
 
 
-                        }Toast.makeText(v.getContext(), "저장완료!", Toast.LENGTH_SHORT).show();
+                            }Toast.makeText(v.getContext(), "저장완료!", Toast.LENGTH_SHORT).show();
 
-                    }else{
-                        if (expendItem!=null){
-                            realm = Realm.getDefaultInstance();
-                            realm.executeTransactionAsync(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    ExpendItem item = realm.where(ExpendItem.class).equalTo("title", i.sub_expend_title).equalTo("date", date).findFirst();
-                                    item.deleteFromRealm();
+                        }else{
+                            if (expendItem!=null){
+                                realm = Realm.getDefaultInstance();
+                                realm.executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        ExpendItem item = realm.where(ExpendItem.class).equalTo("title", i.sub_expend_title).equalTo("date", date).findFirst();
+                                        item.deleteFromRealm();
 
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
                     }
                 }

@@ -113,48 +113,52 @@ public class MainClassIncomeAdapter extends RealmRecyclerViewAdapter<MainClass_i
         holder.item_save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+
                 subIncomeItemArrayList = subClassincomeAdapter.pass_list();
-                for (final SubIncomeItem i : subIncomeItemArrayList) {
-                    final IncomeItem incomeItem = realm.where(IncomeItem.class).equalTo("title", i.sub_income_title).equalTo("date", date).findFirst();
-                    if(i.sub_income_cost != 0){
-                        if (incomeItem==null){
-                            realm = Realm.getDefaultInstance();
-                            realm.executeTransactionAsync(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    IncomeItem incomeItem1 = realm.createObject(IncomeItem.class);
-                                    incomeItem1.setTitle(i.sub_income_title);
-                                    incomeItem1.setCost(i.sub_income_cost);
-                                    incomeItem1.setDate(date);
-                                }
-                            });
+                if(subIncomeItemArrayList != null){
+                    for (final SubIncomeItem i : subIncomeItemArrayList) {
+                        final IncomeItem incomeItem = realm.where(IncomeItem.class).equalTo("title", i.sub_income_title).equalTo("date", date).findFirst();
+                        if(i.sub_income_cost != 0){
+                            if (incomeItem==null){
+                                realm = Realm.getDefaultInstance();
+                                realm.executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        IncomeItem incomeItem1 = realm.createObject(IncomeItem.class);
+                                        incomeItem1.setTitle(i.sub_income_title);
+                                        incomeItem1.setCost(i.sub_income_cost);
+                                        incomeItem1.setDate(date);
+                                    }
+                                });
 
+                            }else{
+                                realm = Realm.getDefaultInstance();
+                                realm.executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        IncomeItem item = realm.where(IncomeItem.class).equalTo("title", i.sub_income_title).equalTo("date", date).findFirst();
+                                        item.setCost(i.sub_income_cost);
+
+                                    }
+                                });
+
+                            }Toast.makeText(v.getContext(), "저장완료!", Toast.LENGTH_SHORT).show();
                         }else{
-                            realm = Realm.getDefaultInstance();
-                            realm.executeTransactionAsync(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    IncomeItem item = realm.where(IncomeItem.class).equalTo("title", i.sub_income_title).equalTo("date", date).findFirst();
-                                    item.setCost(i.sub_income_cost);
+                            if (incomeItem!=null){
+                                realm = Realm.getDefaultInstance();
+                                realm.executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        IncomeItem item = realm.where(IncomeItem.class).equalTo("title", i.sub_income_title).equalTo("date", date).findFirst();
+                                        item.deleteFromRealm();
 
-                                }
-                            });
-
-                        }Toast.makeText(v.getContext(), "저장완료!", Toast.LENGTH_SHORT).show();
-                    }else{
-                        if (incomeItem!=null){
-                            realm = Realm.getDefaultInstance();
-                            realm.executeTransactionAsync(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    IncomeItem item = realm.where(IncomeItem.class).equalTo("title", i.sub_income_title).equalTo("date", date).findFirst();
-                                    item.deleteFromRealm();
-
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
                     }
                 }
+
 
 
             }
