@@ -52,7 +52,7 @@ public class StatisticsFragment extends Fragment {
     Realm realm;
 
     private String TAG = "***StatisticsFragment";
-    MultiStateToggleButton dmy_btn, ie_btn;
+    MultiStateToggleButton dmy_btn, ie_btn, classify_btn;
 
     int chart_year, chart_month, chart_day;
 
@@ -165,6 +165,23 @@ public class StatisticsFragment extends Fragment {
                         break;
                     case 1: //excome
                         showChart(dmy_btn.getValue(), 1);
+                        break;
+
+
+                }
+            }
+        });
+
+        // 대분류 소분류 토글 버튼
+        classify_btn = root.findViewById(R.id.statistics_classify_btn);
+        classify_btn.setValue(0);
+        classify_btn.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                switch (value){
+                    case 0: //소분류
+                        break;
+                    case 1: //대분류
                         break;
 
 

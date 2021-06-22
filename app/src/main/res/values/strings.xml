@@ -23,6 +23,11 @@
         <item>지출</item>
     </string-array>
 
+    <string-array name="classify">
+        <item>소분류</item>
+        <item>대분류</item>
+    </string-array>
+
     <string-array name="analysis_first">
         <item>소득</item>
         <item>수입</item>

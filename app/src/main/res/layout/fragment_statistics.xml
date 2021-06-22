@@ -29,6 +29,19 @@
         app:mstbColorPressedText="@color/white"
         app:values="@array/income_expend" />
 
+    <org.honorato.multistatetogglebutton.MultiStateToggleButton
+        android:id="@+id/statistics_classify_btn"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toEndOf="@id/statistics_ie_btn"
+        app:layout_constraintEnd_toStartOf="@id/statistics_dmy_btn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mstbColorNotPressedBackground="@color/white"
+        app:mstbColorNotPressedText="@color/royalblue"
+        app:mstbColorPressedBackground="@color/royalblue"
+        app:mstbColorPressedText="@color/white"
+        app:values="@array/classify" />
+
     <ScrollView
         android:id="@+id/statistics_scrollview"
         android:layout_width="match_parent"
